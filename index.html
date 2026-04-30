@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>明日のサプライズ企画</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF8FAB;
+            --primary-dark: #FB6F92;
+            --secondary: #C8B6FF;
+            --accent: #FFD93D;
+            --mint: #95E1D3;
+            --cream: #FFF5F8;
+            --ink: #2D2438;
+            --gray: #6B6478;
+            --light-gray: #E8E4F0;
+            --shadow-sm: 0 2px 8px rgba(45, 36, 56, 0.08);
+            --shadow-md: 0 8px 24px rgba(45, 36, 56, 0.12);
+            --shadow-lg: 0 20px 50px rgba(45, 36, 56, 0.15);
+            --shadow-glow: 0 0 40px rgba(255, 143, 171, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--ink);
+            min-height: 100vh;
+            overflow-x: hidden;
+            font-feature-settings: "palt";
+            letter-spacing: 0.02em;
+        }
+
+        body {
+            background: linear-gradient(135deg, #FFE5EC 0%, #FFC2D4 25%, #C8B6FF 75%, #B8C0FF 100%);
+            background-attachment: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* 背景の浮遊する装飾 */
+        .bg-decoration {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .bg-bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.1));
+            backdrop-filter: blur(2px);
+            animation: floatBubble 20s ease-in-out infinite;
+        }
+
+        .bg-bubble:nth-child(1) { width: 200px; height: 200px; top: 10%; left: 5%; animation-delay: 0s; }
+        .bg-bubble:nth-child(2) { width: 150px; height: 150px; top: 60%; right: 10%; animation-delay: 5s; }
+        .bg-bubble:nth-child(3) { width: 100px; height: 100px; bottom: 15%; left: 20%; animation-delay: 10s; }
+        .bg-bubble:nth-child(4) { width: 80px; height: 80px; top: 30%; right: 25%; animation-delay: 15s; }
+
+        @keyframes floatBubble {
+            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+            33% { transform: translate(30px, -40px) scale(1.1); opacity: 0.7; }
+            66% { transform: translate(-20px, 30px) scale(0.95); opacity: 0.4; }
+        }
+
+        /* メインコンテナ */
+        .container {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 32px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            max-width: 480px;
+            width: 100%;
+            padding: 40px 32px;
+            position: relative;
+            z-index: 1;
+            animation: containerEnter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes containerEnter {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+            animation: screenFade 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes screenFade {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* タイトル */
+        .title-eyebrow {
+            font-family: 'Playfair Display', serif;
+            font-size: 11px;
+            letter-spacing: 0.4em;
+            color: var(--primary-dark);
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        h1 {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--ink);
+            text-align: center;
+            margin-bottom: 8px;
+            letter-spacing: 0.05em;
+        }
+
+        .title-decoration {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .title-line {
+            width: 30px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary-dark), transparent);
+        }
+
+        .title-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+            box-shadow: 0 0 12px var(--primary);
+        }
+
+        h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--ink);
+            text-align: center;
+            margin-bottom: 24px;
+            letter-spacing: 0.05em;
+        }
+
+        /* チェックリスト */
+        .checkbox-list {
+            margin: 24px 0;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            padding: 16px 18px;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1.5px solid rgba(255, 255, 255, 0.9);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .checkbox-item::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 0;
+        }
+
+        .checkbox-item:hover {
+            transform: translateX(4px);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .checkbox-item.checked {
+            background: linear-gradient(135deg, rgba(255, 143, 171, 0.15), rgba(200, 182, 255, 0.15));
+            border-color: var(--primary);
+        }
+
+        .custom-checkbox {
+            width: 22px;
+            height: 22px;
+            border: 2px solid var(--light-gray);
+            border-radius: 7px;
+            margin-right: 14px;
+            margin-top: 1px;
+            flex-shrink: 0;
+            position: relative;
+            transition: all 0.3s;
+            background: white;
+            z-index: 1;
+        }
+
+        .checkbox-item.checked .custom-checkbox {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-color: var(--primary-dark);
+            box-shadow: 0 4px 12px rgba(251, 111, 146, 0.4);
+        }
+
+        .custom-checkbox::after {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 2px;
+            width: 6px;
+            height: 11px;
+            border: solid white;
+            border-width: 0 2.5px 2.5px 0;
+            transform: rotate(45deg) scale(0);
+            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .checkbox-item.checked .custom-checkbox::after {
+            transform: rotate(45deg) scale(1);
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            display: none;
+        }
+
+        .checkbox-item label {
+            cursor: pointer;
+            flex: 1;
+            font-size: 14px;
+            color: var(--ink);
+            line-height: 1.6;
+            font-weight: 500;
+            z-index: 1;
+            position: relative;
+        }
+
+        /* ボタン */
+        button {
+            width: 100%;
+            padding: 16px 20px;
+            margin-top: 24px;
+            border: none;
+            border-radius: 16px;
+            font-size: 14px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            letter-spacing: 0.1em;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.5s, height 0.5s;
+        }
+
+        button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            box-shadow: 0 8px 24px rgba(255, 143, 171, 0.4);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(255, 143, 171, 0.5);
+        }
+
+        .btn-primary:active:not(:disabled) {
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            background: var(--light-gray);
+            box-shadow: none;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #95E1D3 0%, #7FD8BE 100%);
+            color: white;
+            box-shadow: 0 8px 24px rgba(149, 225, 211, 0.4);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(149, 225, 211, 0.5);
+        }
+
+        .btn-danger {
+            background: rgba(255, 255, 255, 0.8);
+            color: var(--gray);
+            border: 1.5px solid var(--light-gray);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            background: white;
+            color: var(--ink);
+            border-color: var(--primary);
+        }
+
+        /* ルーレット画面 */
+        .roulette-stage {
+            position: relative;
+            margin: 32px 0;
+            padding: 0;
+        }
+
+        .slot-machine {
+            background: linear-gradient(135deg, #2D2438 0%, #4a3d5e 100%);
+            border-radius: 24px;
+            padding: 8px;
+            box-shadow:
+                inset 0 4px 12px rgba(0, 0, 0, 0.3),
+                0 12px 40px rgba(45, 36, 56, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slot-machine::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg,
+                rgba(0, 0, 0, 0.4) 0%,
+                transparent 20%,
+                transparent 80%,
+                rgba(0, 0, 0, 0.4) 100%);
+            pointer-events: none;
+            z-index: 2;
+            border-radius: 24px;
+        }
+
+        .slot-window {
+            background: white;
+            border-radius: 18px;
+            height: 220px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .slot-indicator {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 70px;
+            background: linear-gradient(135deg, rgba(255, 143, 171, 0.12), rgba(200, 182, 255, 0.12));
+            border-top: 2px solid var(--primary);
+            border-bottom: 2px solid var(--primary);
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .slot-indicator::before,
+        .slot-indicator::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-style: solid;
+        }
+
+        .slot-indicator::before {
+            left: -2px;
+            border-width: 8px 0 8px 12px;
+            border-color: transparent transparent transparent var(--primary);
+        }
+
+        .slot-indicator::after {
+            right: -2px;
+            border-width: 8px 12px 8px 0;
+            border-color: transparent var(--primary) transparent transparent;
+        }
+
+        .slot-track {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            transform: translateY(-35px);
+            transition: transform 4s cubic-bezier(0.15, 0.85, 0.25, 1);
+        }
+
+        .slot-item {
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--ink);
+            text-align: center;
+            line-height: 1.4;
+            border-bottom: 1px dashed rgba(45, 36, 56, 0.08);
+        }
+
+        .slot-item:last-child {
+            border-bottom: none;
+        }
+
+        .roulette-subtitle {
+            text-align: center;
+            color: var(--gray);
+            font-size: 12px;
+            margin-bottom: 20px;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+        }
+
+        /* 確認画面 */
+        .event-card {
+            background: linear-gradient(135deg, rgba(255, 143, 171, 0.1), rgba(200, 182, 255, 0.1));
+            border: 1.5px solid rgba(255, 143, 171, 0.3);
+            padding: 32px 24px;
+            border-radius: 24px;
+            margin: 24px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .event-card::before {
+            content: '"';
+            position: absolute;
+            top: -10px;
+            left: 16px;
+            font-family: 'Playfair Display', serif;
+            font-size: 80px;
+            color: var(--primary);
+            opacity: 0.2;
+            line-height: 1;
+        }
+
+        .event-label {
+            font-family: 'Playfair Display', serif;
+            font-size: 11px;
+            letter-spacing: 0.4em;
+            color: var(--primary-dark);
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+
+        .event-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--ink);
+            text-align: center;
+            line-height: 1.5;
+            letter-spacing: 0.03em;
+        }
+
+        .confirmation-prompt {
+            text-align: center;
+            color: var(--gray);
+            font-size: 13px;
+            margin: 20px 0 8px;
+            letter-spacing: 0.05em;
+        }
+
+        .button-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .button-row button {
+            flex: 1;
+            margin-top: 0;
+        }
+
+        /* 完了画面 */
+        .celebration-stage {
+            text-align: center;
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .celebration-icon {
+            font-size: 56px;
+            margin: 0 0 16px;
+            display: inline-block;
+            animation: celebrationFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes celebrationFloat {
+            0%, 100% { transform: translateY(0) rotate(-5deg); }
+            50% { transform: translateY(-12px) rotate(5deg); }
+        }
+
+        .celebration-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary-dark), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+            letter-spacing: 0.05em;
+        }
+
+        .celebration-event {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--ink);
+            margin: 20px 0 12px;
+            line-height: 1.5;
+            padding: 16px 20px;
+            background: white;
+            border-radius: 16px;
+            border: 1.5px solid rgba(255, 143, 171, 0.2);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .celebration-message {
+            font-size: 13px;
+            color: var(--gray);
+            margin-bottom: 24px;
+            letter-spacing: 0.05em;
+        }
+
+        /* カレンダー */
+        .calendar {
+            background: rgba(255, 255, 255, 0.6);
+            border: 1.5px solid rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .calendar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .calendar-month {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .calendar-month .month-num {
+            color: var(--primary-dark);
+            font-size: 28px;
+        }
+
+        .calendar-stats {
+            font-size: 11px;
+            color: var(--gray);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .calendar-stats .stat-num {
+            color: var(--primary-dark);
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 600;
+            background: white;
+            color: var(--ink);
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+        }
+
+        .calendar-day:hover:not(.header):not(:empty) {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .calendar-day.header {
+            background: transparent;
+            color: var(--gray);
+            font-weight: 700;
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            cursor: default;
+        }
+
+        .calendar-day.header.sun { color: var(--primary-dark); }
+        .calendar-day.header.sat { color: #7FB8E0; }
+
+        .calendar-day.completed {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 4px 12px rgba(255, 143, 171, 0.3);
+            font-weight: 700;
+        }
+
+        .calendar-day.completed::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .calendar-day.today {
+            border: 2px solid var(--primary);
+            color: var(--primary-dark);
+            font-weight: 700;
+        }
+
+        .calendar-day.today.completed {
+            border-color: var(--accent);
+            color: white;
+        }
+
+        /* 紙吹雪 */
+        .confetti {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            font-size: 24px;
+            animation: confettiFall linear forwards;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-20vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(120vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* スピン中の演出 */
+        .spinning-overlay {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.05));
+            border-radius: 18px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 4;
+        }
+
+        .slot-machine.spinning .spinning-overlay {
+            opacity: 1;
+        }
+
+        .slot-machine.spinning .slot-window {
+            animation: shake 0.1s linear infinite;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-1px); }
+            75% { transform: translateX(1px); }
+        }
+
+        /* スパークル装飾 */
+        .sparkle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 12px var(--accent);
+            animation: sparkle 2s ease-in-out infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 32px 24px;
+                border-radius: 24px;
+            }
+
+            h1 { font-size: 22px; }
+            .celebration-title { font-size: 26px; }
+            .event-name { font-size: 18px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-decoration">
+        <div class="bg-bubble"></div>
+        <div class="bg-bubble"></div>
+        <div class="bg-bubble"></div>
+        <div class="bg-bubble"></div>
+    </div>
+
+    <div class="container">
+        <!-- 同意確認画面 -->
+        <div id="consentScreen" class="screen active">
+            <div class="title-eyebrow">Tomorrow's Surprise</div>
+            <h1>明日のサプライズ企画</h1>
+            <div class="title-decoration">
+                <div class="title-line"></div>
+                <div class="title-dot"></div>
+                <div class="title-line"></div>
+            </div>
+
+            <div class="checkbox-list">
+                <div class="checkbox-item" data-target="consent1">
+                    <input type="checkbox" id="consent1">
+                    <div class="custom-checkbox"></div>
+                    <label>あなたはこのイベントに必ず参加しなければいけない</label>
+                </div>
+                <div class="checkbox-item" data-target="consent2">
+                    <input type="checkbox" id="consent2">
+                    <div class="custom-checkbox"></div>
+                    <label>もし天候や状況によって難しい場合は、もう一度ルーレットを行うことができる</label>
+                </div>
+                <div class="checkbox-item" data-target="consent3">
+                    <input type="checkbox" id="consent3">
+                    <div class="custom-checkbox"></div>
+                    <label>このイベントは1ヶ月間行われる</label>
+                </div>
+            </div>
+
+            <button class="btn-primary" id="startBtn" disabled>同意して始める</button>
+        </div>
+
+        <!-- ルーレット画面 -->
+        <div id="rouletteScreen" class="screen">
+            <div class="title-eyebrow">Day <span id="dayNumber">1</span> of 31</div>
+            <h2 id="rouletteTitle">明日の企画を決めよう</h2>
+            <div class="roulette-subtitle">Spin the Roulette</div>
+
+            <div class="roulette-stage">
+                <div class="slot-machine" id="slotMachine">
+                    <div class="slot-window">
+                        <div class="slot-track" id="slotTrack"></div>
+                        <div class="slot-indicator"></div>
+                        <div class="spinning-overlay"></div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-primary" id="spinBtn">ルーレットを回す</button>
+        </div>
+
+        <!-- 確認画面 -->
+        <div id="confirmScreen" class="screen">
+            <div class="title-eyebrow">Your Surprise</div>
+            <h2>明日はこれ！</h2>
+
+            <div class="event-card">
+                <div class="event-label">Tomorrow's Plan</div>
+                <div class="event-name" id="selectedEvent"></div>
+            </div>
+
+            <div class="confirmation-prompt">明日はこれを本当に実行できますか？</div>
+
+            <div class="button-row">
+                <button class="btn-danger" id="confirmNoBtn">もう一度</button>
+                <button class="btn-success" id="confirmYesBtn">はい！</button>
+            </div>
+        </div>
+
+        <!-- 完了画面 -->
+        <div id="completionScreen" class="screen">
+            <div class="celebration-stage">
+                <div class="celebration-icon">🎀</div>
+                <div class="celebration-title">Decided!</div>
+                <div class="title-eyebrow" style="margin-bottom: 0;">Your Plan is Ready</div>
+                <div class="celebration-event" id="completedEvent"></div>
+                <div class="celebration-message">素敵な時間を過ごしてね 💕</div>
+
+                <div class="calendar">
+                    <div class="calendar-header">
+                        <div class="calendar-month"><span class="month-num">5</span> May 2026</div>
+                        <div class="calendar-stats"><span class="stat-num" id="completedCount">0</span> / 31 Days</div>
+                    </div>
+                    <div class="calendar-grid" id="calendarGrid"></div>
+                </div>
+
+                <button class="btn-primary" id="nextDayBtn">次の日を決める</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const events = [
+            "早起きしてカフェモーニング",
+            "日帰りドライブデート",
+            "カラオケ2時間コース",
+            "近所で絶対行ったことない道を散歩",
+            "行ったことないジャンルの料理を食べに行く",
+            "Googleマップで「知らない駅」をランダムに選んで行く",
+            "お互いのメニューを見ずに相手の食べたそうなものを注文",
+            "家の中のお宝探しゲーム",
+            "アニメやドラマキャラになりきって1日を過ごす",
+            "300均で5分以内に一番いいものを探す競争",
+            "「右・左・まっすぐ」をじゃんけんで決めながら街を歩く",
+            "2人で「生まれて初めて食べるもの」を探してスーパーで買う",
+            "2人で1万円以下の近くのホテルにいきなりステイ",
+            "会話中に特定のワードを言ったら罰ゲームありの縛りトーク",
+            "いつも乗り越す駅で降りてみる",
+            "じゃんけんで負けたら次の1時間は相手のあだ名で呼び続ける",
+            "30分マッサージ権×3枚プレゼント",
+            "出来事をニュース原稿っぽくまとめて読み上げる1日",
+            "NEWoMan高輪デート",
+            "会話を全部5文字以内で返す縛りで会話する",
+            "相手の発言に必ず「ということは？」と返し続ける縛り",
+            "2人でできる簡単なスポーツを選択して遊ぶ",
+            "SNSでよく見かける冒頭フック系を使って会話する",
+            "まだ行ったことない関東圏以外の旅行先を探して決定する",
+            "今日中にお互いが気づかないうちにこっそり写真を10枚撮る",
+            "コンビニのスイーツを別々に買って何を買ったか当てる",
+            "トランプをして負けた方は簡単な家事を1人でやる",
+            "簡単な料理やお菓子を一緒に作る",
+            "できるだけ英語を使いながら過ごす1日",
+            "みなとみらいの夜をランニングして楽しむ",
+            "横浜中華街を食べ歩きする",
+            "カップヌードルミュージアムに行く",
+            "「この駅何があるの？」を見つけて散策してみる",
+            "しりとりで会話しながらデートする",
+            "今日の2人の予言を紙に書いて半年後に答え合わせ",
+            "AIにお金がかからないデートプランを決めさせて実行",
+            "3つのコンビニの同じ商品を比較して評価する",
+            "今日だけ語尾に尊敬語を添えて会話する",
+            "今日1日カメラマンごっこ、いろんなポーズを撮り合う",
+            "10秒間ピッタリタイマーで近かった人がアイスをもらえる",
+            "この1年間で変わったことをお互いに語り合う",
+            "新しい500円以内のペアルックを買う",
+            "なおぽんがあいちゃんに10枚のベストショットを印刷する",
+            "初めての場所にあえて何も調べずに行くノープラン旅",
+            "二人でクロスワード・脳トレ",
+            "なおぽんがあいちゃんに飲み物をホテル風に提供する"
+        ];
+
+        const ITEM_HEIGHT = 70;
+        let selectedDate = new Date(2026, 4, 1);
+        let completedEvents = {};
+        let usedEventIndices = [];
+        let isSpinning = false;
+        let currentSelectedIndex = -1;
+
+        function loadData() {
+            const saved = localStorage.getItem('surpriseEventData');
+            if (saved) {
+                const data = JSON.parse(saved);
+                completedEvents = data.completedEvents || {};
+                usedEventIndices = data.usedEventIndices || [];
+                if (data.currentDate) {
+                    selectedDate = new Date(data.currentDate);
+                }
+            }
+            updateDayNumber();
+        }
+
+        function saveData() {
+            localStorage.setItem('surpriseEventData', JSON.stringify({
+                completedEvents,
+                usedEventIndices,
+                currentDate: selectedDate.toISOString()
+            }));
+        }
+
+        function updateDayNumber() {
+            const day = selectedDate.getDate();
+            const el = document.getElementById('dayNumber');
+            if (el) el.textContent = day;
+        }
+
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        // チェックリスト
+        document.querySelectorAll('.checkbox-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const checkbox = item.querySelector('input[type="checkbox"]');
+                checkbox.checked = !checkbox.checked;
+                item.classList.toggle('checked', checkbox.checked);
+
+                const all = Array.from(document.querySelectorAll('.checkbox-item input[type="checkbox"]'))
+                    .every(cb => cb.checked);
+                document.getElementById('startBtn').disabled = !all;
+            });
+        });
+
+        document.getElementById('startBtn').addEventListener('click', () => {
+            updateDayNumber();
+            buildSlotTrack();
+            showScreen('rouletteScreen');
+        });
+
+        // スロットトラックを構築
+        function buildSlotTrack() {
+            const track = document.getElementById('slotTrack');
+            track.innerHTML = '';
+            track.style.transition = 'none';
+            track.style.transform = `translateY(-${ITEM_HEIGHT / 2}px)`;
+
+            // 初期表示用の項目（中央が最初の項目）
+            events.forEach(event => {
+                const item = document.createElement('div');
+                item.className = 'slot-item';
+                item.textContent = event;
+                track.appendChild(item);
+            });
+        }
+
+        function getAvailableIndices() {
+            const available = events
+                .map((_, i) => i)
+                .filter(i => !usedEventIndices.includes(i));
+            return available.length > 0 ? available : events.map((_, i) => i);
+        }
+
+        function spinRoulette() {
+            if (isSpinning) return;
+            isSpinning = true;
+
+            const availableIndices = getAvailableIndices();
+            const selectedIndex = availableIndices[Math.floor(Math.random() * availableIndices.length)];
+            currentSelectedIndex = selectedIndex;
+
+            const track = document.getElementById('slotTrack');
+            const slotMachine = document.getElementById('slotMachine');
+
+            // たくさんのアイテムを生成して長いスピンに
+            track.innerHTML = '';
+            track.style.transition = 'none';
+            track.style.transform = `translateY(0)`;
+
+            // ループ用に多数のアイテムを追加
+            const loops = 8;
+            for (let l = 0; l < loops; l++) {
+                events.forEach(event => {
+                    const item = document.createElement('div');
+                    item.className = 'slot-item';
+                    item.textContent = event;
+                    track.appendChild(item);
+                });
+            }
+            // 最後に選択されたアイテム
+            events.forEach(event => {
+                const item = document.createElement('div');
+                item.className = 'slot-item';
+                item.textContent = event;
+                track.appendChild(item);
+            });
+
+            slotMachine.classList.add('spinning');
+
+            // 強制リフロー
+            track.offsetHeight;
+
+            // スピン開始
+            const totalItems = events.length;
+            const finalPosition = (loops * totalItems + selectedIndex) * ITEM_HEIGHT - ITEM_HEIGHT / 2 + ITEM_HEIGHT / 2;
+            const targetY = -((loops * totalItems + selectedIndex) * ITEM_HEIGHT - ITEM_HEIGHT * 1.5);
+
+            track.style.transition = 'transform 4s cubic-bezier(0.15, 0.85, 0.25, 1)';
+            track.style.transform = `translateY(${targetY}px)`;
+
+            const spinBtn = document.getElementById('spinBtn');
+            spinBtn.disabled = true;
+            spinBtn.textContent = '回転中...';
+
+            setTimeout(() => {
+                slotMachine.classList.remove('spinning');
+                isSpinning = false;
+                spinBtn.disabled = false;
+                spinBtn.textContent = 'ルーレットを回す';
+
+                document.getElementById('selectedEvent').textContent = events[selectedIndex];
+                showScreen('confirmScreen');
+            }, 4100);
+        }
+
+        document.getElementById('spinBtn').addEventListener('click', spinRoulette);
+
+        // 確認
+        document.getElementById('confirmYesBtn').addEventListener('click', () => {
+            if (!usedEventIndices.includes(currentSelectedIndex)) {
+                usedEventIndices.push(currentSelectedIndex);
+            }
+
+            const dateKey = selectedDate.toISOString().split('T')[0];
+            completedEvents[dateKey] = events[currentSelectedIndex];
+            saveData();
+
+            document.getElementById('completedEvent').textContent = events[currentSelectedIndex];
+            renderCalendar();
+            showScreen('completionScreen');
+            createConfetti();
+        });
+
+        document.getElementById('confirmNoBtn').addEventListener('click', () => {
+            buildSlotTrack();
+            showScreen('rouletteScreen');
+        });
+
+        document.getElementById('nextDayBtn').addEventListener('click', () => {
+            selectedDate.setDate(selectedDate.getDate() + 1);
+            if (selectedDate.getMonth() > 4 || selectedDate.getFullYear() > 2026) {
+                alert('🎊 1ヶ月間お疲れさま！素敵な思い出をありがとう 💕');
+                selectedDate = new Date(2026, 4, 1);
+                completedEvents = {};
+                usedEventIndices = [];
+                localStorage.removeItem('surpriseEventData');
+            }
+            saveData();
+            updateDayNumber();
+            buildSlotTrack();
+            showScreen('rouletteScreen');
+        });
+
+        function renderCalendar() {
+            const grid = document.getElementById('calendarGrid');
+            grid.innerHTML = '';
+
+            const headers = [
+                { label: 'S', cls: 'sun' },
+                { label: 'M', cls: '' },
+                { label: 'T', cls: '' },
+                { label: 'W', cls: '' },
+                { label: 'T', cls: '' },
+                { label: 'F', cls: '' },
+                { label: 'S', cls: 'sat' }
+            ];
+
+            headers.forEach(h => {
+                const day = document.createElement('div');
+                day.className = `calendar-day header ${h.cls}`;
+                day.textContent = h.label;
+                grid.appendChild(day);
+            });
+
+            const firstDay = new Date(2026, 4, 1);
+            const startingDayOfWeek = firstDay.getDay();
+
+            for (let i = 0; i < startingDayOfWeek; i++) {
+                const empty = document.createElement('div');
+                grid.appendChild(empty);
+            }
+
+            for (let date = 1; date <= 31; date++) {
+                const day = document.createElement('div');
+                day.className = 'calendar-day';
+                day.textContent = date;
+
+                const d = new Date(2026, 4, date);
+                const dateKey = d.toISOString().split('T')[0];
+
+                if (completedEvents[dateKey]) {
+                    day.classList.add('completed');
+                    day.title = completedEvents[dateKey];
+                }
+
+                if (date === selectedDate.getDate() && selectedDate.getMonth() === 4) {
+                    day.classList.add('today');
+                }
+
+                grid.appendChild(day);
+            }
+
+            const count = Object.keys(completedEvents).length;
+            const countEl = document.getElementById('completedCount');
+            if (countEl) countEl.textContent = count;
+        }
+
+        function createConfetti() {
+            const emojis = ['🎀', '✨', '🎊', '💕', '🌟', '💫', '🌸'];
+            for (let i = 0; i < 40; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.fontSize = Math.random() * 16 + 16 + 'px';
+                confetti.style.animationDuration = (Math.random() * 2 + 2.5) + 's';
+                confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 5000);
+            }
+        }
+
+        loadData();
+        buildSlotTrack();
+    </script>
+</body>
+</html>
